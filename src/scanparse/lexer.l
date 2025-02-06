@@ -72,6 +72,10 @@ int yycolumn = 1;
                              FILTER( NUM);
                            }
 
+[0-9]+\.[0-9]+             { yylval.cint=atoi(yytext);
+                             FILTER( FLOAT);
+                           }
+
 \n.*                       {
                              yycolumn = 1;
                              global.line += 1;
