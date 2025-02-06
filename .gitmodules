@@ -1,3 +1,6 @@
 [submodule "coconut"]
 	path = coconut
     url = https://github.com/CoCoNut-UvA/coconut.git
+[submodule "nutcheck"]
+	path = nutcheck
+	url = https://github.com/Derkades/nutcheck.git
