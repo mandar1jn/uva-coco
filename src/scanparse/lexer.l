@@ -39,6 +39,8 @@ int yycolumn = 1;
 
 %%
 
+[0-9]                      num
+
 "("                        { FILTER( BRACKET_L); }
 ")"                        { FILTER( BRACKET_R); }
 ","                        { FILTER( COMMA); }
@@ -68,11 +70,11 @@ int yycolumn = 1;
                              FILTER( ID);
                            }
 
-[0-9]+                     { yylval.cint=atoi(yytext);
+{num}+                     { yylval.cint=atoi(yytext);
                              FILTER( NUM);
                            }
 
-[0-9]+\.[0-9]+             { yylval.cint=atoi(yytext);
+{num}+\.{num}+             { yylval.cint=atoi(yytext);
                              FILTER( FLOAT);
                            }
 
