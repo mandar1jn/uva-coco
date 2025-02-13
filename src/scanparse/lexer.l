@@ -36,7 +36,11 @@ int yycolumn = 1;
 %option nounput
 %option yylineno
 
-DIGIT   [0-9]
+DIGIT     [0-9]
+LOWER     [a-z]
+UPPER     [A-Z]
+ALPHA     [A-Za-z]
+ALPHANUM  [A-Za-z0-9]
 
 %%
 
@@ -69,7 +73,7 @@ DIGIT   [0-9]
 "true"                     { FILTER( TRUEVAL); }
 "false"                    { FILTER( FALSEVAL); }
 
-[A-Za-z][A-Za-z0-9_]*      { yylval.id = STRcpy(yytext);
+{ALPHA}{ALPHANUM}*      { yylval.id = STRcpy(yytext);
                              FILTER( ID);
                            }
 
