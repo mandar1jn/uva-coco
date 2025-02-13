@@ -13,8 +13,8 @@ traversal Print {
 
 /*** AST ***/
 
-enum MonOpType {
-    prefix = MO,
+enum UnOpType {
+    prefix = UO,
     values {
         not, neg
     }
@@ -28,7 +28,7 @@ enum BinOpType {
     }
 };
 
-nodeset Expr = {Num, Float, Bool, Binop, Var};
+nodeset Expr = {Num, Float, Bool, Binop, Unop, Var};
 nodeset Stmt = {Assign};
 
 // Nodes you want to be able to link to from your symbol table.
@@ -62,6 +62,16 @@ node Binop {
 
     attributes {
         BinOpType op { constructor }
+    }
+};
+
+node Unop {
+    children {
+        Expr right { constructor, mandatory }
+    },
+
+    attributes {
+        UnOpType op {constructor}
     }
 };
 

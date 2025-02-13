@@ -58,6 +58,7 @@ ALPHANUM  [A-Za-z0-9]
 "*"                        { FILTER( STAR);  }
 "/"                        { FILTER( SLASH);  }
 "%"                        { FILTER( PERCENT);  }
+"!"                        { FILTER( NOT); }
 
 "<="                       { FILTER( LE);    }
 "<"                        { FILTER( LT);    }

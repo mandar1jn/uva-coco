@@ -113,6 +113,34 @@ node_st *PRTbinop(node_st *node)
 }
 
 /**
+ * @fn PRTunop
+ */
+node_st *PRTunop(node_st *node)
+{
+    char *tmp = NULL;
+    printf( "( ");
+
+    switch (UNOP_OP(node)) {
+    case UO_not:
+      tmp = "!";
+      break;
+    case UO_neg:
+      tmp = "-";
+      break;
+    case UO_NULL:
+      DBUG_ASSERT(false, "unknown unnop detected!");
+    }
+
+    printf("%s", tmp);
+
+    TRAVright(node);
+
+    printf( ")(%d:%d-%d)", NODE_BLINE(node), NODE_BCOL(node), NODE_ECOL(node));
+
+    return node;
+}
+
+/**
  * @fn PRTvarlet
  */
 node_st *PRTvarlet(node_st *node)
