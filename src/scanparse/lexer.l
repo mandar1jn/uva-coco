@@ -36,10 +36,9 @@ int yycolumn = 1;
 %option nounput
 %option yylineno
 
+DIGIT   [0-9]
 
 %%
-
-[0-9]                      num
 
 "("                        { FILTER( BRACKET_L); }
 ")"                        { FILTER( BRACKET_R); }
@@ -74,11 +73,11 @@ int yycolumn = 1;
                              FILTER( ID);
                            }
 
-{num}+                     { yylval.cint=atoi(yytext);
+{DIGIT}+                     { yylval.cint=atoi(yytext);
                              FILTER( NUM);
                            }
 
-{num}+\.{num}+             { yylval.cint=atoi(yytext);
+{DIGIT}+\.{DIGIT}+             { yylval.cint=atoi(yytext);
                              FILTER( FLOAT);
                            }
 
