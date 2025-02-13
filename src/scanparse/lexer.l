@@ -104,6 +104,11 @@ ALPHANUM  [A-Za-z0-9]
 
 [ \t]                      { global.col += yyleng;
                            }
+
+"//".*                     { global.col = 0;
+                             global.line += 1;
+                            //  yyless(1);
+                           }
 %%
 
 static inline void token_action() {
