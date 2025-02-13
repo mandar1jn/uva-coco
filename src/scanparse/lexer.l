@@ -77,7 +77,7 @@ DIGIT   [0-9]
                              FILTER( NUM);
                            }
 
-{DIGIT}+\.{DIGIT}+             { yylval.cint=atoi(yytext);
+{DIGIT}+"."{DIGIT}*             { yylval.cint=atoi(yytext);
                              FILTER( FLOAT);
                            }
 
