@@ -159,11 +159,11 @@ node_st *PRTvar(node_st *node)
 }
 
 /**
- * @fn PRTnum
+ * @fn PRTint
  */
-node_st *PRTnum(node_st *node)
+node_st *PRTint(node_st *node)
 {
-    printf("%d", NUM_VAL(node));
+    printf("%d", INT_VAL(node));
     return node;
 }
 

@@ -28,7 +28,7 @@ enum BinOpType {
     }
 };
 
-nodeset Expr = {Num, Float, Bool, Binop, Unop, Var};
+nodeset Expr = {Int, Float, Bool, Binop, Unop, Var};
 nodeset Stmt = {Assign};
 
 // Nodes you want to be able to link to from your symbol table.
@@ -96,7 +96,7 @@ node Var {
     }
 };
 
-node Num {
+node Int {
     attributes {
         int val { constructor }
     }

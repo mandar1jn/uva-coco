@@ -89,7 +89,7 @@ ALPHANUM  [A-Za-z0-9]
                            }
 
 {DIGIT}+                   { yylval.cint=atoi(yytext);
-                             FILTER( NUM);
+                             FILTER( INT);
                            }
 
 {DIGIT}+"."{DIGIT}*        { yylval.cflt=atof(yytext);

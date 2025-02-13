@@ -38,7 +38,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 %token IF WHILE DO FOR RETURN
 %token VOID EXTERN EXPORT
 
-%token <cint> NUM
+%token <cint> INT
 %token <cflt> FLOAT
 %token <id> ID
 
@@ -127,9 +127,9 @@ floatval: FLOAT
            }
          ;
 
-intval: NUM
+intval: INT
         {
-          $$ = ASTnum($1);
+          $$ = ASTint($1);
         }
       ;
 
