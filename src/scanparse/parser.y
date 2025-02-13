@@ -31,7 +31,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 
 %locations
 
-%token BRACKET_L BRACKET_R COMMA SEMICOLON
+%token BRACKET_L BRACKET_R SQUARE_L SQUARE_R CURLY_L CURLY_R COMMA SEMICOLON
 %token MINUS PLUS STAR SLASH PERCENT LE LT GE GT EQ NE OR AND
 %token TRUEVAL FALSEVAL LET
 

@@ -43,6 +43,10 @@ int yycolumn = 1;
 
 "("                        { FILTER( BRACKET_L); }
 ")"                        { FILTER( BRACKET_R); }
+"["                        { FILTER( SQUARE_L); }
+"]"                        { FILTER( SQUARE_R); }
+"{"                        { FILTER( CURLY_L); }
+"}"                        { FILTER( CURLY_R); }
 ","                        { FILTER( COMMA); }
 ";"                        { FILTER( SEMICOLON); }
 
