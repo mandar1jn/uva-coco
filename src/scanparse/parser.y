@@ -34,6 +34,8 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 %token BRACKET_L BRACKET_R SQUARE_L SQUARE_R CURLY_L CURLY_R COMMA SEMICOLON
 %token MINUS PLUS STAR SLASH PERCENT LE LT GE GT EQ NE OR AND
 %token TRUEVAL FALSEVAL LET
+%token IF WHILE DO FOR RETURN
+%token VOID EXTERN EXPORT
 
 %token <cint> NUM
 %token <cflt> FLOAT

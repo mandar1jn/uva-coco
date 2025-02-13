@@ -73,15 +73,25 @@ ALPHANUM  [A-Za-z0-9]
 "true"                     { FILTER( TRUEVAL); }
 "false"                    { FILTER( FALSEVAL); }
 
-{ALPHA}{ALPHANUM}*      { yylval.id = STRcpy(yytext);
+"if"                       { FILTER( IF);    }
+"while"                    { FILTER( WHILE);    }
+"do"                       { FILTER( DO);    }
+"for"                      { FILTER( FOR);    }
+"return"                   { FILTER( RETURN);    }
+
+"void"                     { FILTER( VOID);    }
+"extern"                   { FILTER( EXTERN);    }
+"export"                   { FILTER( EXPORT);    }
+
+{ALPHA}{ALPHANUM}*         { yylval.id = STRcpy(yytext);
                              FILTER( ID);
                            }
 
-{DIGIT}+                     { yylval.cint=atoi(yytext);
+{DIGIT}+                   { yylval.cint=atoi(yytext);
                              FILTER( NUM);
                            }
 
-{DIGIT}+"."{DIGIT}*             { yylval.cflt=atof(yytext);
+{DIGIT}+"."{DIGIT}*        { yylval.cflt=atof(yytext);
                              FILTER( FLOAT);
                            }
 
