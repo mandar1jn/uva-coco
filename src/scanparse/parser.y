@@ -25,18 +25,25 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
  char               *id;
  int                 cint;
  float               cflt;
- enum BinOpType     cbinop;
- enum UnOpType      cunop;
  node_st             *node;
 }
 
 %locations
 
-%token BRACKET_L BRACKET_R SQUARE_L SQUARE_R CURLY_L CURLY_R COMMA SEMICOLON
-%token MINUS PLUS STAR SLASH PERCENT NOT LE LT GE GT EQ NE OR AND
-%token TRUEVAL FALSEVAL LET
+%token BRACKET_L BRACKET_R SQUARE_L SQUARE_R CURLY_L CURLY_R SEMICOLON
+%token TRUEVAL FALSEVAL
 %token IF WHILE DO FOR RETURN
 %token VOID EXTERN EXPORT
+
+%left COMMA
+%right LET
+%left OR
+%left AND
+%left EQ NE
+%left LT LE GT GE
+%left PLUS MINUS
+%left STAR SLASH PERCENT
+%right NOT
 
 %token <cint> INT
 %token <cflt> FLOAT
@@ -44,8 +51,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 
 %type <node> intval floatval boolval constant expr
 %type <node> stmts stmt assign varlet program
-%type <cbinop> binop
-%type <cunop> unop
+%type <node> binop unop
 
 %start program
 
@@ -87,7 +93,12 @@ varlet: ID
         ;
 
 
-expr: constant
+expr: BRACKET_L expr BRACKET_R
+      {
+        $$ = $2;
+      }
+    |
+      constant
       {
         $$ = $1;
       }
@@ -95,16 +106,14 @@ expr: constant
       {
         $$ = ASTvar($1);
       }
-    | BRACKET_L expr[left] binop[type] expr[right] BRACKET_R
+    | binop
       {
-        $$ = ASTbinop( $left, $right, $type);
-        AddLocToNode($$, &@left, &@right);
+        $$ = $1;
       }
-    | unop[type] expr[right]
-      {
-        $$ = ASTunop($right, $type);
-        AddLocToNode($$, &@right, &@right);
-      }
+    | unop
+    {
+        $$ = $1;
+    }
     ;
 
 constant: floatval
@@ -143,23 +152,89 @@ boolval: TRUEVAL
          }
        ;
 
-binop: PLUS      { $$ = BO_add; }
-     | MINUS     { $$ = BO_sub; }
-     | STAR      { $$ = BO_mul; }
-     | SLASH     { $$ = BO_div; }
-     | PERCENT   { $$ = BO_mod; }
-     | LE        { $$ = BO_le; }
-     | LT        { $$ = BO_lt; }
-     | GE        { $$ = BO_ge; }
-     | GT        { $$ = BO_gt; }
-     | EQ        { $$ = BO_eq; }
-     | OR        { $$ = BO_or; }
-     | AND       { $$ = BO_and; }
+binop:  expr[left] PLUS expr[right] 
+        {
+            $$ = ASTbinop($left, $right, BO_add);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] MINUS expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_sub);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] STAR expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_mul);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] SLASH expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_div);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] PERCENT expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_mod);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] LE expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_le);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] LT expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_lt);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] GE expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_ge);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] GT expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_gt);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] EQ expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_eq);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] NE expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_ne);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] OR expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_or);
+            AddLocToNode($$, &@left, &@right);
+        }
+        | expr[left] AND expr[right]
+        {
+            $$ = ASTbinop($left, $right, BO_and);
+            AddLocToNode($$, &@left, &@right);
+        }
+
+//      | EQ        { $$ = BO_eq; }
+//      | NE        { $$ = BO_ne; }
+//      | OR        { $$ = BO_or; }
+//      | AND       { $$ = BO_and; }
      ;
 
-unop: MINUS      { $$ = UO_neg; }
-    | NOT        { $$ = UO_not; }
-    ;
+unop:   MINUS[op] expr[right]
+        {
+            $$ = ASTunop($right, UO_neg);
+            AddLocToNode($$, &@op, &@right);
+        }
+        | NOT[op] expr[right]
+        { 
+            $$ = ASTunop($right, UO_not);
+            AddLocToNode($$, &@op, &@right);
+        }
+        ;
 
 %%
 
