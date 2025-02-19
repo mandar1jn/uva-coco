@@ -57,100 +57,99 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 
 %%
 
-program: stmts
-         {
-           parseresult = ASTprogram($1);
-         }
-         ;
+program:    stmts
+            {
+                parseresult = ASTprogram($1);
+            }
+            ;
 
-stmts: stmt stmts
+stmts:  stmt stmts
         {
-          $$ = ASTstmts($1, $2);
+            $$ = ASTstmts($1, $2);
         }
-      | stmt
+        | stmt
         {
-          $$ = ASTstmts($1, NULL);
+            $$ = ASTstmts($1, NULL);
         }
         ;
 
-stmt: assign
-       {
-         $$ = $1;
-       }
-       ;
+stmt:   assign
+        {
+            $$ = $1;
+        }
+        ;
 
 assign: varlet LET expr SEMICOLON
         {
-          $$ = ASTassign($1, $3);
+            $$ = ASTassign($1, $3);
         }
         ;
 
 varlet: ID
         {
-          $$ = ASTvarlet($1);
-          AddLocToNode($$, &@1, &@1);
+            $$ = ASTvarlet($1);
+            AddLocToNode($$, &@1, &@1);
         }
         ;
 
 
-expr: BRACKET_L expr BRACKET_R
-      {
-        $$ = $2;
-      }
-    |
-      constant
-      {
-        $$ = $1;
-      }
-    | ID
-      {
-        $$ = ASTvar($1);
-      }
-    | binop
-      {
-        $$ = $1;
-      }
-    | unop
-    {
-        $$ = $1;
-    }
-    ;
-
-constant: floatval
-          {
+expr:   BRACKET_L expr BRACKET_R
+        {
+            $$ = $2;
+        } 
+        | constant
+        {
             $$ = $1;
-          }
-        | intval
-          {
+        }
+        | ID
+        {
+            $$ = ASTvar($1);
+        }
+        | binop
+        {
             $$ = $1;
-          }
-        | boolval
-          {
+        }
+        | unop
+        {
             $$ = $1;
-          }
+        }
         ;
 
-floatval: FLOAT
-           {
-             $$ = ASTfloat($1);
-           }
-         ;
+constant:   floatval
+            {
+                $$ = $1;
+            }
+            | intval
+            {
+                $$ = $1;
+            }
+            | boolval
+            {
+                $$ = $1;
+            }
+            ;
+
+floatval:   FLOAT
+            {
+                $$ = ASTfloat($1);
+            }
+            ;
 
 intval: INT
         {
-          $$ = ASTnum($1);
+        $$ = ASTnum($1);
         }
-      ;
+        ;
 
-boolval: TRUEVAL
-         {
-           $$ = ASTbool(true);
-         }
-       | FALSEVAL
-         {
-           $$ = ASTbool(false);
-         }
-       ;
+boolval:    TRUEVAL
+            {
+                $$ = ASTbool(true);
+            }
+            | FALSEVAL
+            {
+                $$ = ASTbool(false);
+            }
+            ;
 
 binop:  expr[left] PLUS expr[right] 
         {
@@ -217,12 +216,7 @@ binop:  expr[left] PLUS expr[right]
             $$ = ASTbinop($left, $right, BO_and);
             AddLocToNode($$, &@left, &@right);
         }
-
-//      | EQ        { $$ = BO_eq; }
-//      | NE        { $$ = BO_ne; }
-//      | OR        { $$ = BO_or; }
-//      | AND       { $$ = BO_and; }
-     ;
+        ;
 
 unop:   MINUS[op] expr[right]
         {
@@ -251,10 +245,10 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc)
 
 int yyerror(char *error)
 {
-  CTI(CTI_ERROR, true, "line %d, col %d\nError parsing source code: %s\n",
-            global.line, global.col, error);
-  CTIabortOnError();
-  return 0;
+    CTI(CTI_ERROR, true, "line %d, col %d\nError parsing source code: %s\n",
+                global.line, global.col, error);
+    CTIabortOnError();
+    return 0;
 }
 
 node_st *SPdoScanParse(node_st *root)
