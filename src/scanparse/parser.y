@@ -129,7 +129,7 @@ floatval: FLOAT
 
 intval: INT
         {
-          $$ = ASTint($1);
+          $$ = ASTnum($1);
         }
       ;
 
