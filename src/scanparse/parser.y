@@ -34,6 +34,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 %token TRUEVAL FALSEVAL
 %token IF WHILE DO FOR RETURN
 %token VOID EXTERN EXPORT
+%token INT_TYPE FLOAT_TYPE BOOL_TYPE VOID_TYPE
 
 %left COMMA
 %right LET
@@ -43,7 +44,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 %left LT LE GT GE
 %left PLUS MINUS
 %left STAR SLASH PERCENT
-%right NOT
+%right NOT 
 
 %token <cint> INT
 %token <cflt> FLOAT
@@ -51,7 +52,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 
 %type <node> intval floatval boolval constant expr
 %type <node> stmts stmt assign varlet program
-%type <node> binop unop
+%type <node> binop unop cast
 
 %start program
 
@@ -97,19 +98,27 @@ expr:   BRACKET_L expr BRACKET_R
         {
             $$ = $2;
         } 
-        | constant
-        {
-            $$ = $1;
-        }
-        | ID
-        {
-            $$ = ASTvar($1);
-        }
         | binop
         {
             $$ = $1;
         }
         | unop
+        {
+            $$ = $1;
+        }
+        /* | cast
+        {
+            $$ = $1;
+        } */
+        /* | funcall (with and without args)
+        {
+            $$ = $1;
+        } */
+        | ID
+        {
+            $$ = ASTvar($1);
+        }
+        | constant
         {
             $$ = $1;
         }

@@ -84,6 +84,11 @@ ALPHANUM  [A-Za-z0-9]
 "extern"                   { FILTER( EXTERN);    }
 "export"                   { FILTER( EXPORT);    }
 
+"int"                      { FILTER(INT_TYPE); }
+"float"                    { FILTER(FLOAT_TYPE); }
+"bool"                     { FILTER(BOOL_TYPE); }
+"void"                     { FILTER(VOID_TYPE); }
+
 {ALPHA}{ALPHANUM}*         { yylval.id = STRcpy(yytext);
                              FILTER( ID);
                            }
