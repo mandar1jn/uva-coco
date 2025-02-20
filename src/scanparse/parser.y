@@ -25,6 +25,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
  char               *id;
  int                 cint;
  float               cflt;
+ enum Type           ctype;
  node_st             *node;
 }
 
@@ -44,7 +45,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 %left LT LE GT GE
 %left PLUS MINUS
 %left STAR SLASH PERCENT
-%right NOT 
+%right NOT BRACKET_R
 
 %token <cint> INT
 %token <cflt> FLOAT
@@ -52,7 +53,8 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 
 %type <node> intval floatval boolval constant expr
 %type <node> stmts stmt assign varlet program
-%type <node> binop unop cast
+%type <node> binop unop
+%type <ctype> type
 
 %start program
 
@@ -106,10 +108,10 @@ expr:   BRACKET_L expr BRACKET_R
         {
             $$ = $1;
         }
-        /* | cast
+        | BRACKET_L type BRACKET_R expr
         {
-            $$ = $1;
-        } */
+            $$ = ASTcast($4, $2);
+        }
         /* | funcall (with and without args)
         {
             $$ = $1;
@@ -123,6 +125,23 @@ expr:   BRACKET_L expr BRACKET_R
             $$ = $1;
         }
         ;
+
+type:   INT_TYPE
+        {
+            $$ = CT_int;
+        }
+        | FLOAT_TYPE
+        {
+            $$ = CT_float;
+        }
+        | BOOL_TYPE
+        {
+            $$ = CT_bool;
+        }
+        | VOID_TYPE
+        {
+            $$ = CT_void;
+        }
 
 constant:   floatval
             {

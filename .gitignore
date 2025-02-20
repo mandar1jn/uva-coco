@@ -47,5 +47,7 @@ build*/
 .vscode/*
 !.vscode/c_cpp_properties.json
 
-# Custom ingores
+# Custom ignores
 toolchain/
+parser.tab.c
+parser.output
