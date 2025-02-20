@@ -51,7 +51,7 @@ void AddLocToNode(node_st *node, void *begin_loc, void *end_loc);
 %token <cflt> FLOAT
 %token <id> ID
 
-%type <node> intval floatval boolval constant expr
+%type <node> intval floatval boolval constant expr /*exprs*/ func_args
 %type <node> stmts stmt assign varlet program
 %type <node> binop unop
 %type <ctype> type
@@ -95,6 +95,14 @@ varlet: ID
         }
         ;
 
+// exprs:  expr exprs
+//         {
+//             $$ = ASTexprs($1, $2);
+//         }
+//         | expr
+//         {
+//             $$ = ASTexprs($1, NULL);
+//         }
 
 expr:   BRACKET_L expr BRACKET_R
         {
@@ -112,10 +120,15 @@ expr:   BRACKET_L expr BRACKET_R
         {
             $$ = ASTcast($4, $2);
         }
-        /* | funcall (with and without args)
+        | ID BRACKET_L BRACKET_R
         {
-            $$ = $1;
-        } */
+            $$ = ASTfuncall($1);
+        }
+        | ID BRACKET_L func_args BRACKET_R
+        {
+            $$ = ASTfuncall($1);
+            FUNCALL_FUN_ARGS($$) = $3;
+        }
         | ID
         {
             $$ = ASTvar($1);
@@ -125,6 +138,15 @@ expr:   BRACKET_L expr BRACKET_R
             $$ = $1;
         }
         ;
+
+func_args:   expr COMMA func_args
+            {
+                $$ = ASTexprs($1, $3);
+            }
+            | expr
+            {
+                $$ = ASTexprs($1, NULL);
+            }
 
 type:   INT_TYPE
         {
