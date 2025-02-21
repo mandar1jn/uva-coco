@@ -192,7 +192,65 @@ node_st *PRTassign(node_st *node) {
  * @fn PRTbinop
  */
 node_st *PRTbinop(node_st *node) {
-  printf("TODO");
+  
+    printf("BinOp(");
+
+    TRAVleft(node);
+
+    char* op;
+
+    switch(BINOP_OP(node))
+    {
+        case BO_add:
+            op = "+";
+            break;
+        case BO_sub:
+            op = "-";
+            break;
+        case BO_mul:
+            op = "*";
+            break;
+        case BO_div:
+            op = "/";
+            break;
+        case BO_mod:
+            op = "%%";
+            break;
+        case BO_lt:
+            op = "<";
+            break;
+        case BO_le:
+            op = "<=";
+            break;
+        case BO_gt:
+            op = ">";
+            break;
+        case BO_ge:
+            op = ">=";
+            break;
+        case BO_eq:
+            op = "==";
+            break;
+        case BO_ne:
+            op = "!=";
+            break;
+        case BO_and:
+            op = "&&";
+            break;
+        case BO_or:
+            op = "||";
+            break;
+        default:
+        case BO_NULL:
+            DBUG_ASSERT(false, "Found unknown binop.");
+    }
+
+    printf(" %s ", op);
+
+    TRAVright(node);
+
+    printf(")");
+
   return node;
 }
 
@@ -200,7 +258,28 @@ node_st *PRTbinop(node_st *node) {
  * @fn PRTunop
  */
 node_st *PRTunop(node_st *node) {
-  printf("TODO");
+  
+    char op;
+    switch(UNOP_OP(node))
+    {
+        case UO_not:
+            op = '!';
+            break;
+        case UO_neg:
+            op = '-';
+            break;
+        default:
+        case UO_NULL:
+            DBUG_ASSERT(false, "Found unknown unop.");
+    }
+
+    printf("UnOp(%c", op);
+
+    TRAVoperand(node);
+
+    printf(")");
+
+
   return node;
 }
 
@@ -224,7 +303,9 @@ node_st *PRTvar(node_st *node) {
  * @fn PRTnum
  */
 node_st *PRTnum(node_st *node) {
-  printf("TODO");
+
+  printf("Num[%d]", NUM_VAL(node));
+
   return node;
 }
 
@@ -232,7 +313,9 @@ node_st *PRTnum(node_st *node) {
  * @fn PRTfloat
  */
 node_st *PRTfloat(node_st *node) {
-  printf("TODO");
+  
+    printf("Float[%f]", FLOAT_VAL(node));
+
   return node;
 }
 
@@ -240,6 +323,8 @@ node_st *PRTfloat(node_st *node) {
  * @fn PRTbool
  */
 node_st *PRTbool(node_st *node) {
-  printf("TODO");
+
+  printf("Bool[%s]", BOOL_VAL(node)? "true" : "false");
+
   return node;
 }
