@@ -95,7 +95,7 @@ nodeset Linked {
 
 root node Program {
     children {
-        Decls decls { constructor, mandatory }
+        Exprs decls { constructor, mandatory }
     }
 };
 

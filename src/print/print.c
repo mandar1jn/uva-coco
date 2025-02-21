@@ -16,7 +16,9 @@
  * @fn PRTprogram
  */
 node_st *PRTprogram(node_st *node) {
-  printf("TODO");
+  
+    TRAVdecls(node);
+
   return node;
 }
 
@@ -24,7 +26,7 @@ node_st *PRTprogram(node_st *node) {
  * @fn PRTdecls
  */
 node_st *PRTdecls(node_st *node) {
-  printf("TODO");
+  printf("decls");
   return node;
 }
 
@@ -32,7 +34,16 @@ node_st *PRTdecls(node_st *node) {
  * @fn PRTexprs
  */
 node_st *PRTexprs(node_st *node) {
-  printf("TODO");
+
+    TRAVexpr(node);
+
+    if(EXPRS_NEXT(node) != NULL)
+    {
+        TRAVnext(node);
+    }
+
+  printf("exprs");
+
   return node;
 }
 
@@ -40,7 +51,7 @@ node_st *PRTexprs(node_st *node) {
  * @fn PRTarrexpr
  */
 node_st *PRTarrexpr(node_st *node) {
-  printf("TODO");
+  printf("arrayexpr");
   return node;
 }
 
@@ -48,7 +59,7 @@ node_st *PRTarrexpr(node_st *node) {
  * @fn PRTids
  */
 node_st *PRTids(node_st *node) {
-  printf("TODO");
+  printf("ids");
   return node;
 }
 
@@ -56,7 +67,7 @@ node_st *PRTids(node_st *node) {
  * @fn PRTexprstmt
  */
 node_st *PRTexprstmt(node_st *node) {
-  printf("TODO");
+  printf("exprstmt");
   return node;
 }
 
@@ -64,7 +75,7 @@ node_st *PRTexprstmt(node_st *node) {
  * @fn PRTreturn
  */
 node_st *PRTreturn(node_st *node) {
-  printf("TODO");
+  printf("return");
   return node;
 }
 
@@ -72,7 +83,7 @@ node_st *PRTreturn(node_st *node) {
  * @fn PRTfuncall
  */
 node_st *PRTfuncall(node_st *node) {
-  printf("TODO");
+  printf("funcall");
   return node;
 }
 
@@ -80,7 +91,34 @@ node_st *PRTfuncall(node_st *node) {
  * @fn PRTcast
  */
 node_st *PRTcast(node_st *node) {
-  printf("TODO");
+
+  char* type;
+
+  switch(CAST_TYPE(node))
+  {
+    case CT_int:
+        type = "int";
+        break;
+    case CT_float:
+        type = "float";
+        break;
+    case CT_bool:
+        type = "bool";
+        break;
+    case CT_void:
+        type = "void";
+        break;
+    default:
+    case CT_NULL:
+        printf("Found unknown type for cast.");
+  }
+
+  printf("Cast(%s, ", type);
+
+  TRAVexpr(node);
+
+  printf(")");
+
   return node;
 }
 
@@ -88,7 +126,7 @@ node_st *PRTcast(node_st *node) {
  * @fn PRTfundefs
  */
 node_st *PRTfundefs(node_st *node) {
-  printf("TODO");
+  printf("fundefs");
   return node;
 }
 
@@ -96,7 +134,7 @@ node_st *PRTfundefs(node_st *node) {
  * @fn PRTfundef
  */
 node_st *PRTfundef(node_st *node) {
-  printf("TODO");
+  printf("fundef");
   return node;
 }
 
@@ -104,7 +142,7 @@ node_st *PRTfundef(node_st *node) {
  * @fn PRTfunbody
  */
 node_st *PRTfunbody(node_st *node) {
-  printf("TODO");
+  printf("funbody");
   return node;
 }
 
@@ -112,7 +150,7 @@ node_st *PRTfunbody(node_st *node) {
  * @fn PRTifelse
  */
 node_st *PRTifelse(node_st *node) {
-  printf("TODO");
+  printf("ifelse");
   return node;
 }
 
@@ -120,7 +158,7 @@ node_st *PRTifelse(node_st *node) {
  * @fn PRTwhile
  */
 node_st *PRTwhile(node_st *node) {
-  printf("TODO");
+  printf("while");
   return node;
 }
 
@@ -128,7 +166,7 @@ node_st *PRTwhile(node_st *node) {
  * @fn PRTdowhile
  */
 node_st *PRTdowhile(node_st *node) {
-  printf("TODO");
+  printf("dowhile");
   return node;
 }
 
@@ -136,7 +174,7 @@ node_st *PRTdowhile(node_st *node) {
  * @fn PRTfor
  */
 node_st *PRTfor(node_st *node) {
-  printf("TODO");
+  printf("for");
   return node;
 }
 
@@ -144,7 +182,7 @@ node_st *PRTfor(node_st *node) {
  * @fn PRTglobdecl
  */
 node_st *PRTglobdecl(node_st *node) {
-  printf("TODO");
+  printf("globdecl");
   return node;
 }
 
@@ -152,7 +190,7 @@ node_st *PRTglobdecl(node_st *node) {
  * @fn PRTglobdef
  */
 node_st *PRTglobdef(node_st *node) {
-  printf("TODO");
+  printf("globdef");
   return node;
 }
 
@@ -160,7 +198,7 @@ node_st *PRTglobdef(node_st *node) {
  * @fn PRTparam
  */
 node_st *PRTparam(node_st *node) {
-  printf("TODO");
+  printf("param");
   return node;
 }
 
@@ -168,7 +206,7 @@ node_st *PRTparam(node_st *node) {
  * @fn PRTvardecl
  */
 node_st *PRTvardecl(node_st *node) {
-  printf("TODO");
+  printf("vardecl");
   return node;
 }
 
@@ -176,7 +214,7 @@ node_st *PRTvardecl(node_st *node) {
  * @fn PRTstmts
  */
 node_st *PRTstmts(node_st *node) {
-  printf("TODO");
+  printf("stmts");
   return node;
 }
 
@@ -184,7 +222,7 @@ node_st *PRTstmts(node_st *node) {
  * @fn PRTassign
  */
 node_st *PRTassign(node_st *node) {
-  printf("TODO");
+  printf("assign");
   return node;
 }
 
@@ -287,7 +325,7 @@ node_st *PRTunop(node_st *node) {
  * @fn PRTvarlet
  */
 node_st *PRTvarlet(node_st *node) {
-  printf("TODO");
+  printf("varlet");
   return node;
 }
 
@@ -295,7 +333,7 @@ node_st *PRTvarlet(node_st *node) {
  * @fn PRTvar
  */
 node_st *PRTvar(node_st *node) {
-  printf("TODO");
+  printf("Var(%s)", VAR_NAME(node));
   return node;
 }
 
